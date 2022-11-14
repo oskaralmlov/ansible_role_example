@@ -1,0 +1,23 @@
+---
+# Start the role with a block tagged with the role name
+# This makes it so that no matter where you import this role you know
+# that you can ALWAYS run just this role by running `ansible-playbook playbook.yml --tags python`
+- tags: python
+  become: true  # All of these tasks require root, become at block level instead of individual tasks
+  block:
+
+    - name: Install python & pip
+      ansible.builtin.apt:
+        name: 
+          - python3-pip
+          - python{{ python_version }}
+        state: present
+      tags: python_install  # Sub-tag for running a subset of role tasks
+
+    - name: Install python packages
+      ansible.builtin.pip:
+        name: "{{ python_packages }}"
+        state: present
+        extra_args: "{{ (python_user != 'root') | ternary('--user', omit) }}" # Run with --user when user is not root, else omit.
+      become_user: "{{ python_user }}"
+      tags: python_packages # Sub-tag for running a subset of role tasks

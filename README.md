@@ -1,2 +1,2 @@
 # ansible_role_example
-An example of role best practises
+A small example of role best practises.

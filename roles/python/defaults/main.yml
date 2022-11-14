@@ -1,0 +1,15 @@
+---
+# Prefix role variables with the role name.
+# This makes it easier to differentiate role variables from other variables.
+
+# Define a default python version
+# Allowing users to override or use the default value
+python_version: 3.10
+
+# Set sane defaults
+# Rather than not defining this variable and have conditionals like
+# `when: python_packages is defined` instead define it with an empty list.
+python_packages: []
+
+# Allow --user install of packages
+python_user: root

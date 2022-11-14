@@ -1,0 +1,48 @@
+# Separate task that imports the roles necessary to configure the base system
+- name: Configure base system
+  hosts: all
+  tasks:
+
+    # Notice there is no tag on this import task
+    # Tagging the import is not necessary since we
+    # already tagged the block inside the role main.yml
+    #
+    # user@dev:/tmp/ansible_role_example$ ansible-playbook --list-tags playbook.yml 
+    # playbook: playbook.yml
+    # play #1 (all): Configure base system	TAGS: []
+    # TASK TAGS: [python, python_install, python_packages]
+    - name: Import python role
+      ansible.builtin.import_role:
+        name: python
+
+    - name: Import sshd role
+      ansible.builtin.debug:
+        msg: Would have imported sshd role
+
+
+# Leave 2 blank lines between plays for visual separation
+- name: Configure webservers
+  hosts: www
+  tasks:
+
+    - name: Import letsencrypt role
+      ansible.builtin.debug:
+        msg: Would have imported letsencrypt role
+
+    - name: Some webserver specific task
+      ansible.builtin.debug:
+        msg: Task specific for www servers but not big enough for a separate role
+
+
+# Leave 2 blank lines between plays for visual separation
+- name: Configure db servers
+  hosts: db
+  tasks:
+
+    - name: Import postgres role
+      ansible.builtin.debug:
+        msg: Would have imported postgres role
+
+    - name: Some database specific task
+      ansible.builtin.debug:
+        msg: Task specific for db servers but not big enough for a separate role
